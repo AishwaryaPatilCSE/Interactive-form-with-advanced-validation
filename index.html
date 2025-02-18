@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .form-control {
+            border-radius: 8px;
+        }
+        .btn-primary {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            let fullName = document.getElementById("fullName").value.trim().split(" ");
+            let aadhar = document.getElementById("aadhar").value;
+            let pan = document.getElementById("pan").value;
+            let mobile = document.getElementById("mobile").value;
+            let dob = document.getElementById("dob").value;
+            let marks = [
+                parseFloat(document.getElementById("subject1").value) || 0,
+                parseFloat(document.getElementById("subject2").value) || 0,
+                parseFloat(document.getElementById("subject3").value) || 0,
+                parseFloat(document.getElementById("subject4").value) || 0,
+                parseFloat(document.getElementById("subject5").value) || 0,
+                parseFloat(document.getElementById("subject6").value) || 0
+            ];
+            
+            if (fullName.length < 2) {
+                alert("Enter at least first and last name");
+                return false;
+            }
+            if (!/^[0-9]{12}$/.test(aadhar)) {
+                alert("Aadhar must be 12 digits");
+                return false;
+            }
+            if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan)) {
+                alert("Invalid PAN format");
+                return false;
+            }
+            if (!/^[6-9][0-9]{9}$/.test(mobile)) {
+                alert("Invalid mobile number");
+                return false;
+            }
+            
+            let birthDate = new Date(dob);
+            let age = new Date().getFullYear() - birthDate.getFullYear();
+            if (age < 18) {
+                alert("Must be at least 18 years old");
+                return false;
+            }
+            
+            marks.sort((a, b) => b - a);
+            let percentage = (marks.slice(0, 5).reduce((a, b) => a + b, 0) / 5).toFixed(2);
+            document.getElementById("percentage").value = percentage;
+            alert("Form submitted! Percentage: " + percentage + "%");
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="form-container">
+        <h2 class="form-title">Registration Form</h2>
+        <form onsubmit="return validateForm()">
+            <input type="text" id="fullName" class="form-control mb-2" placeholder="Full Name" required>
+            <input type="text" id="aadhar" class="form-control mb-2" placeholder="Aadhar Number" required>
+            <input type="text" id="pan" class="form-control mb-2" placeholder="PAN Number" required>
+            <input type="text" id="mobile" class="form-control mb-2" placeholder="Mobile Number" required>
+            <input type="date" id="dob" class="form-control mb-2" required>
+            <h5 class="text-center">Enter Marks</h5>
+            <input type="number" id="subject1" class="form-control mb-2" placeholder="Subject 1" required>
+            <input type="number" id="subject2" class="form-control mb-2" placeholder="Subject 2" required>
+            <input type="number" id="subject3" class="form-control mb-2" placeholder="Subject 3" required>
+            <input type="number" id="subject4" class="form-control mb-2" placeholder="Subject 4" required>
+            <input type="number" id="subject5" class="form-control mb-2" placeholder="Subject 5" required>
+            <input type="number" id="subject6" class="form-control mb-2" placeholder="Subject 6" required>
+            <input type="text" id="percentage" class="form-control mb-2" placeholder="Best 5 Percentage" readonly>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
